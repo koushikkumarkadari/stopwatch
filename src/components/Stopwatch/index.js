@@ -2,44 +2,38 @@ import {Component} from 'react'
 import './index.css'
 
 class Stopwatch extends Component {
-  state = {isRunning: false, minHand: 0, secHand: 0}
-
-  componentDidMount() {
-    this.timerId = setInterval(this.tick, 1000)
-  }
+  state = {minHand: 0, secHand: 0}
 
   componentWillUnmount() {
     clearInterval(this.timerId)
   }
 
   onStart = () => {
-    this.setState({isRunning: true})
+    this.timerId = setInterval(this.tick, 1000)
   }
 
   onStop = () => {
-    this.setState({isRunning: false})
+    clearInterval(this.timerId)
   }
 
   tick = () => {
-    const {secHand, isRunning} = this.state
-    if (isRunning === true) {
-      if (secHand === 59) {
-        this.setState(prevState => ({
-          secHand: 0,
-          minHand: prevState.minHand + 1,
-        }))
-      } else {
-        this.setState(prevState => ({secHand: prevState.secHand + 1}))
-      }
+    const {secHand} = this.state
+    if (secHand === 59) {
+      this.setState(prevState => ({
+        secHand: 0,
+        minHand: prevState.minHand + 1,
+      }))
+    } else {
+      this.setState(prevState => ({secHand: prevState.secHand + 1}))
     }
   }
 
   onReset = () => {
-    this.setState({secHand: 0, minHand: 0, isRunning: false})
+    this.setState({secHand: 0, minHand: 0})
   }
 
   render() {
-    const {isRunning, minHand, secHand} = this.state
+    const {minHand, secHand} = this.state
     return (
       <div className="background-container">
         <h1 className="main-heading">Stopwatch</h1>
